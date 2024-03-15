@@ -28,7 +28,8 @@ export const signup = async (req,res, next) => {
     const user = new User({
         name,
         email,
-        password
+        password,
+        blogs: []
     });
 
     try {
@@ -39,7 +40,7 @@ export const signup = async (req,res, next) => {
     return res.status(201).json({user})
 }
 
-const login = async (req, res, next) => {
+export const login = async (req, res, next) => {
     const { email, password } = req.body;
     let existingUser;
     try {
@@ -47,9 +48,10 @@ const login = async (req, res, next) => {
     } catch (err) {
         return console.log(err)
     } 
-    if (existingUser) {
+    if (!existingUser) {
         return res
-            .status(400)
-            .json({ message: 'User already exists! Login instead'});
+            .status(404)
+            .json({ message: 'Could not find the User bt this Email'});
     }
+
 }
